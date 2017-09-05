@@ -26,6 +26,8 @@ docker run -t -d -p 80:80 \
 
 To allow easy changes of the `R` packages they can also be mounted as external volumes:
 
+*Macbook Paths:*
+
 ```bash
 docker run -t -d -p 80:80 \
     -p 8004:8004 \
@@ -35,7 +37,18 @@ docker run -t -d -p 80:80 \
     snr
 ```
 
-Edit the package using Rstudio:
+*Aligner Paths:*
+
+```bash
+docker run -t -d -p 80:80 \
+    -p 8004:8004 \
+    -v /opt/sonar/data:/home/opencpu/sonar/data \
+    -v /opt/sonar/sona-R:/home/opencpu/sonar/sonaR \
+    --name opencpu_rstudio \
+    opencpu/rstudio
+```
+
+Edit the package using RStudio:
 
 - [`localhost:8004/rstudio`](localhost:8004/rstudio)
 - User/PW: `opencpu`/`opencpu`
