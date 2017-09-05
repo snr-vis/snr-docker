@@ -6,6 +6,12 @@ make
 
 # Run Container
 
+Pull the container:
+
+```bash
+docker pull paulklemm/snr
+```
+
 OpenCPU is run as Docker container. In order to provide it with the required data, you have to pass it the following folders:
 
 - `data` contains the differential gene expression data
@@ -19,7 +25,7 @@ docker run -t -d -p 80:80 \
     -p 8004:8004 \
     -v /Users/paul/Workshop/MPI/MPI-MR-Projects/SONAR/app/data:/home/opencpu/sonar/data \
     --name opencpu_rstudio \
-    snr
+    paulklemm/snr
 ```
 
 # Run Container Dev Mode
@@ -34,7 +40,7 @@ docker run -t -d -p 80:80 \
     -v /Users/paul/Workshop/MPI/MPI-MR-Projects/SONAR/app/data:/home/opencpu/sonar/data \
     -v /Users/paul/Workshop/MPI/MPI-MR-Projects/SONAR/app/sona-R:/home/opencpu/sonar/sonaR \
     --name opencpu_rstudio \
-    snr
+    paulklemm/snr
 ```
 
 *Aligner Paths:*
@@ -45,7 +51,7 @@ docker run -t -d -p 80:80 \
     -v /opt/sonar/data:/home/opencpu/sonar/data \
     -v /opt/sonar/sona-R:/home/opencpu/sonar/sonaR \
     --name opencpu_rstudio \
-    snr
+    paulklemm/snr
 ```
 
 Edit the package using RStudio:
