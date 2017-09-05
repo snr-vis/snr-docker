@@ -45,7 +45,7 @@ docker run -t -d -p 80:80 \
     -v /opt/sonar/data:/home/opencpu/sonar/data \
     -v /opt/sonar/sona-R:/home/opencpu/sonar/sonaR \
     --name opencpu_rstudio \
-    opencpu/rstudio
+    snr
 ```
 
 Edit the package using RStudio:
