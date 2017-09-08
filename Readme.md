@@ -1,4 +1,21 @@
-# Build Container and Push to DockerHub
+# Sonar OpenCPU Dockerfile
+
+<!-- TOC -->
+
+- [Sonar OpenCPU Dockerfile](#sonar-opencpu-dockerfile)
+	- [TODO](#todo)
+	- [Build Container and Push to DockerHub](#build-container-and-push-to-dockerhub)
+	- [Run Container](#run-container)
+	- [Run Container Dev Mode](#run-container-dev-mode)
+
+<!-- /TOC -->
+
+## TODO
+
+- Call `get_go_summary` for all important species of the current ensembl release on package compile
+- Increase opencpu response time to allow for `get_go_summary` to properly execute
+
+## Build Container and Push to DockerHub
 
 ```bash
 make
@@ -10,7 +27,7 @@ Developer build without pushing to DockerHub:
 docker build --no-cache -t snr . && docker tag snr paulklemm/snr:latest
 ```
 
-# Run Container
+## Run Container
 
 Pull the container:
 
@@ -34,7 +51,7 @@ docker run -t -d -p 80:80 \
     paulklemm/snr
 ```
 
-# Run Container Dev Mode
+## Run Container Dev Mode
 
 To allow easy changes of the `R` packages they can also be mounted as external volumes:
 
