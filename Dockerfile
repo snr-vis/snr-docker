@@ -1,5 +1,7 @@
 FROM opencpu/rstudio
 
+# Switch to user opencpu so that all packages are installed in user r library and not in the system r library
+USER opencpu
 # Install Devtools package
 RUN Rscript -e "install.packages('devtools', repos='https://cran.rstudio.com/')"
 # Install sonar backend packages
@@ -11,3 +13,5 @@ RUN Rscript -e "source('https://bioconductor.org/biocLite.R'); biocLite('BiocIns
 RUN Rscript -e "setRepositories(ind=c(1,2)); devtools::install_github('paulklemm/snrgo')"
 # Install Sonar package
 RUN Rscript -e "devtools::install_github('paulklemm/snr')"
+# Switch back to root, otherwise the webserver doesn't work
+USER root

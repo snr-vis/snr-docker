@@ -4,6 +4,12 @@
 make
 ```
 
+Developer build without pushing to DockerHub:
+
+```bash
+docker build --no-cache -t snr . && docker tag snr paulklemm/snr:latest
+```
+
 # Run Container
 
 Pull the container:
