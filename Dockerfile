@@ -1,5 +1,12 @@
 FROM opencpu/rstudio
 
+# HACK: to support new rlang version - better specify versions properly in packages
+# OpenCPU currently installs rlang 0.1.1, but the new version of the tidyverse relies on
+# rlang 0.1.2. Since the OpenCPU user cannot uninstall these packages, we remove them
+# hard as root and install the new rlang version as dependency when installing snrgo
+RUN rm -r /usr/lib/R/library/rlang
+RUN rm -r /usr/lib/opencpu/library/rlang
+
 # Switch to user opencpu so that all packages are installed in user r library and not in the system r library
 USER opencpu
 # Install Devtools package
