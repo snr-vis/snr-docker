@@ -7,6 +7,11 @@ FROM opencpu/rstudio
 RUN rm -r /usr/lib/R/library/rlang
 RUN rm -r /usr/lib/opencpu/library/rlang
 
+# HACK: Create a commonly used folder for ensembl temp files.
+RUN mkdir -p /usr/local/var/ensembl
+RUN chgrp -R www-data /usr/local/var/ensembl
+RUN chmod -R 777 /usr/local/var/ensembl
+
 # Switch to user opencpu so that all packages are installed in user r library and not in the system r library
 USER opencpu
 # Install Devtools package
