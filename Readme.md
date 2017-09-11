@@ -12,10 +12,12 @@
 
 ## TODO
 
+Issues related to [SNR-GO](https://github.sf.mpg.de/pklemm/sonargo):
+
 - [ ] Call `get_go_summary` for all important species of the current ensembl release on package compile
 - [x] Increase opencpu response time to allow for `get_go_summary` to properly execute
-- [ ] Fix common folder `/usr/local/var/ensembl` or make it the primary one
-- [ ] Fix `rlang` version hack by specifying proper dependencies in the snrgo and snr `R` package
+- [ ] Fix common folder `/usr/local/var/ensembl` or make it the primary one - [https://github.sf.mpg.de/pklemm/sonargo/issues/2](https://github.sf.mpg.de/pklemm/sonargo/issues/2)
+- [ ] Fix `rlang` version hack by specifying proper dependencies in the snrgo and snr `R` package - [https://github.sf.mpg.de/pklemm/sonargo/issues/3](https://github.sf.mpg.de/pklemm/sonargo/issues/3)
 
 ## Build Container and Push to DockerHub
 
