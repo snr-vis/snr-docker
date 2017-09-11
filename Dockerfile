@@ -16,4 +16,4 @@ RUN Rscript -e "devtools::install_github('paulklemm/snr')"
 # Switch back to root, otherwise the webserver doesn't work
 USER root
 # Change the OpenCPU config settings
-sed -i '/"timelimit.post": 90/c\    "timelimit.post": 1000,' /etc/opencpu/server.conf
+RUN sed -i '/"timelimit.post": 90/c\    "timelimit.post": 1000,' /etc/opencpu/server.conf
