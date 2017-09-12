@@ -1,11 +1,12 @@
 FROM opencpu/rstudio
 
-# HACK: to support new rlang version - better specify versions properly in packages
-# OpenCPU currently installs rlang 0.1.1, but the new version of the tidyverse relies on
-# rlang 0.1.2. Since the OpenCPU user cannot uninstall these packages, we remove them
-# hard as root and install the new rlang version as dependency when installing snrgo
-RUN rm -r /usr/lib/R/library/rlang
-RUN rm -r /usr/lib/opencpu/library/rlang
+# HACK: OpenCPU and RStudio already install some packages that are also requirements
+# for the snr and snrgo package. Since these packages are installed as root, the opencpu
+# user cannot change them. If snrgo or snr rely on newer versions of these packages,
+# the installation process fails. Therefore the libraries are now switched to the 
+# www-data, which the opencpu and www-data user are part of and are set to 775
+RUN chgrp -R www-data /usr/lib/R/library && chmod -R 775 /usr/lib/R/library
+RUN chgrp -R www-data /usr/lib/opencpu/library && chmod -R 775 /usr/lib/opencpu/library
 
 # HACK: Create a commonly used folder for ensembl temp files.
 RUN mkdir -p /usr/local/var/ensembl
