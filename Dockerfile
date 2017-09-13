@@ -5,6 +5,8 @@ FROM opencpu/rstudio
 # user cannot change them. If snrgo or snr rely on newer versions of these packages,
 # the installation process fails. Therefore the libraries are now switched to the 
 # www-data, which the opencpu and www-data user are part of and are set to 775
+# Later after installing all packages we will remove all duplicated packages and this
+# should fix incompatibility issues
 RUN chgrp -R www-data /usr/lib/R/library && chmod -R 775 /usr/lib/R/library
 RUN chgrp -R www-data /usr/lib/opencpu/library && chmod -R 775 /usr/lib/opencpu/library
 
@@ -26,6 +28,8 @@ RUN Rscript -e "source('https://bioconductor.org/biocLite.R'); biocLite('BiocIns
 RUN Rscript -e "setRepositories(ind=c(1,2)); devtools::install_github('paulklemm/snrgo')"
 # Install Sonar package
 RUN Rscript -e "devtools::install_github('paulklemm/snr')"
+# Uninstall all duplictated packages - https://stat.ethz.ch/pipermail/r-help/2007-December/149097.html
+RUN Rscript -e "remove.packages(installed.packages()[duplicated(rownames(installed.packages())),1], lib=.libPaths()[.libPaths() != '/usr/local/lib/opencpu/site-library'])"
 # Switch back to root, otherwise the webserver doesn't work
 USER root
 # Change the OpenCPU config settings
