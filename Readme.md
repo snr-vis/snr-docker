@@ -1,14 +1,24 @@
-# Sonar OpenCPU Dockerfile
+# 🐳 Sonar OpenCPU Dockerfile
 
 <!-- TOC -->
 
-- [Sonar OpenCPU Dockerfile](#sonar-opencpu-dockerfile)
+- [🐳 Sonar OpenCPU Dockerfile](#🐳-sonar-opencpu-dockerfile)
+	- [Credit](#credit)
 	- [TODO](#todo)
 	- [Build Container and Push to DockerHub](#build-container-and-push-to-dockerhub)
 	- [Run Container](#run-container)
 	- [Run Container Dev Mode](#run-container-dev-mode)
 
 <!-- /TOC -->
+
+## Credit
+
+This Dockerfile uses code from [https://github.com/opencpu/opencpu-server/tree/master/docker](https://github.com/opencpu/opencpu-server/tree/master/docker):
+
+- [https://github.com/opencpu/opencpu-server/blob/master/docker/base/Dockerfile](https://github.com/opencpu/opencpu-server/blob/master/docker/base/Dockerfile)
+- [https://github.com/opencpu/opencpu-server/blob/master/docker/rstudio/Dockerfile](https://github.com/opencpu/opencpu-server/blob/master/docker/rstudio/Dockerfile)
+
+Simply because we need to start the OpenCPU server as last step to load overwritten packages. The `sudo apachectl restart` command seems to crash the docker container, therefore this hacky solution is required.
 
 ## TODO
 
