@@ -1,8 +1,8 @@
 FROM opencpu/rstudio
 
 # HACK: OpenCPU and RStudio already install some packages that are also requirements
-# for the snr and snrgo package. Since these packages are installed as root, the opencpu
-# user cannot change them. If snrgo or snr rely on newer versions of these packages,
+# for the `snr` and `snrgo` package. Since these packages are installed as root, the opencpu
+# user cannot change them. If `snrgo` or `snr` rely on newer versions of these packages,
 # the installation process fails. Therefore the libraries are now switched to the 
 # www-data, which the opencpu and www-data user are part of and are set to 775
 # Later after installing all packages we will remove all duplicated packages and this
@@ -17,20 +17,20 @@ RUN chmod -R 777 /usr/local/var/ensembl
 
 # Switch to user opencpu so that all packages are installed in user r library and not in the system r library
 USER opencpu
-# Install Devtools package
+# Install `devtools` package
 RUN Rscript -e "install.packages('devtools', repos='https://cran.rstudio.com/')"
 # Install sonar backend packages
 # Install SonarGO package
 # https://stackoverflow.com/questions/34617306/r-package-with-cran-and-bioconductor-dependencies
 # Installing BiocInstaller
 RUN Rscript -e "source('https://bioconductor.org/biocLite.R'); biocLite('BiocInstaller')"
-# Set Repos to CRAN and Bioconductor and then install snrgo and it's dependencies
+# Set repos to CRAN and Bioconductor and then install `snrgo` and it's dependencies
 RUN Rscript -e "setRepositories(ind=c(1,2)); devtools::install_github('paulklemm/snrgo')"
 # Install Sonar package
 RUN Rscript -e "devtools::install_github('paulklemm/snr')"
-# Uninstall all duplictated packages - https://stat.ethz.ch/pipermail/r-help/2007-December/149097.html
+# Uninstall all duplicated packages - https://stat.ethz.ch/pipermail/r-help/2007-December/149097.html
 RUN Rscript -e "remove.packages(installed.packages()[duplicated(rownames(installed.packages())),1], lib=.libPaths()[.libPaths() != '/usr/local/lib/opencpu/site-library'])"
-# Switch back to root, otherwise the webserver doesn't work
+# Switch back to root, otherwise the web-server doesn't work
 USER root
 # Change the OpenCPU config settings
 RUN sed -i '/"timelimit.post": 90/c\    "timelimit.post": 1000,' /etc/opencpu/server.conf
