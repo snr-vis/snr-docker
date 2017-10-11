@@ -66,5 +66,9 @@ RUN Rscript -e "remove.packages(installed.packages()[duplicated(rownames(install
 # Change the OpenCPU config settings
 RUN sed -i '/"timelimit.post": 90/c\    "timelimit.post": 1000,' /etc/opencpu/server.conf
 
+# Add the CRON-Job to purge session files older than one hour
+# From https://github.com/opencpu/opencpu-server/blob/master/opencpu-server/cron.d/opencpu
+RUN echo '*/10 * * * * www-data /usr/lib/opencpu/scripts/cleanocpu.sh' > /etc/cron.d/opencpu
+
 # Start rstudio server and opencpu server. Server is started now because otherwise newly installed package will already be loaded.
 CMD /usr/lib/rstudio-server/bin/rserver && apachectl -DFOREGROUND
