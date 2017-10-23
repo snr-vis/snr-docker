@@ -48,7 +48,7 @@ RUN \
 # HACK: Create a commonly used folder for ensembl temp files.
 RUN mkdir -p /usr/local/var/ensembl && \
   chgrp -R www-data /usr/local/var/ensembl && \
-	chmod -R 777 /usr/local/var/ensembl
+  chmod -R 777 /usr/local/var/ensembl
 
 # Install SonarGO package
 # Installing BiocInstaller - https://stackoverflow.com/questions/34617306/r-package-with-cran-and-bioconductor-dependencies
@@ -68,7 +68,8 @@ RUN sed -i '/"timelimit.post": 90/c\    "timelimit.post": 1000,' /etc/opencpu/se
 
 # Add the CRON-Job to purge session files older than one hour
 # From https://github.com/opencpu/opencpu-server/blob/master/opencpu-server/cron.d/opencpu
-RUN echo '*/10 * * * * www-data /usr/lib/opencpu/scripts/cleanocpu.sh' > /etc/cron.d/opencpu
+RUN echo '*/10 * * * * root /usr/lib/opencpu/scripts/cleanocpu.sh' > /etc/cron.d/opencpu
+RUN crontab /etc/cron.d/opencpu
 
 # Start rstudio server and opencpu server. Server is started now because otherwise newly installed package will already be loaded.
 CMD /usr/lib/rstudio-server/bin/rserver && apachectl -DFOREGROUND
