@@ -39,6 +39,15 @@ RUN \
 ################ SNR ###################################
 ########################################################
 
+# Install additional Ubuntu packages
+RUN \
+  apt-get install nano && \
+  apt-get install --assume-yes rsyslog
+
+# Run Cron with maximum logging for debugging purposes
+# See https://stackoverflow.com/questions/32872764/cron-job-not-running-inside-docker-container-on-ubuntu
+RUN rsyslogd
+
 # Assign site-library to www-data group to make it writeable for opencpu user.
 # This is required so we can hot-rebuild the `snr` and `snrgo` package
 # from within the rstudio session.
@@ -69,7 +78,14 @@ RUN sed -i '/"timelimit.post": 90/c\    "timelimit.post": 1000,' /etc/opencpu/se
 # Add the CRON-Job to purge session files older than one hour
 # From https://github.com/opencpu/opencpu-server/blob/master/opencpu-server/cron.d/opencpu
 RUN echo '*/10 * * * * root /usr/lib/opencpu/scripts/cleanocpu.sh' > /etc/cron.d/opencpu
-RUN crontab /etc/cron.d/opencpu
+# Debug statement for cronjob
+# RUN echo 'date >> /home/opencpu/debug.log' >> /usr/lib/opencpu/scripts/cleanocpu.sh
+# Give execution rights on the cron job
+# https://stackoverflow.com/questions/37458287/how-to-run-a-cron-job-inside-a-docker-container
+RUN chmod 0644 /etc/cron.d/opencpu
+# RUN crontab /etc/cron.d/opencpu
 
-# Start rstudio server and opencpu server. Server is started now because otherwise newly installed package will already be loaded.
-CMD /usr/lib/rstudio-server/bin/rserver && apachectl -DFOREGROUND
+# Start cron, rstudio server and opencpu server.
+# Server is started now because otherwise newly installed package will already be loaded.
+# https://stackoverflow.com/questions/37458287/how-to-run-a-cron-job-inside-a-docker-container
+CMD cron && /usr/lib/rstudio-server/bin/rserver && apachectl -DFOREGROUND
