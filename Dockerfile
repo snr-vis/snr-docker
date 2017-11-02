@@ -73,7 +73,11 @@ RUN Rscript -e "devtools::install_github('paulklemm/snr')"
 # Uninstall all duplicated packages - https://stat.ethz.ch/pipermail/r-help/2007-December/149097.html
 RUN Rscript -e "remove.packages(installed.packages()[duplicated(rownames(installed.packages())),1], lib=.libPaths()[.libPaths() != .Library])"
 # Change the OpenCPU config settings
-RUN sed -i '/"timelimit.post": 90/c\    "timelimit.post": 1000,' /etc/opencpu/server.conf
+RUN sed -i '/"timelimit.post": 90/c\    "timelimit.post": 1000,' /etc/opencpu/server.conf && \
+  sed -i '/"preload": \["lattice", "ggplot2"\]/c\    "preload": \["lattice", "ggplot2", "sonaR", "sonaRGO", "dplyr", "readr", "jsonlite", "devtools", "biomaRt"\]' /etc/opencpu/server.conf
+
+# HACK: Download the Ensembl Metadata
+RUN Rscript -e "library(sonaRGO); get_go_summary()"
 
 # Add the CRON-Job to purge session files older than one hour
 # From https://github.com/opencpu/opencpu-server/blob/master/opencpu-server/cron.d/opencpu
