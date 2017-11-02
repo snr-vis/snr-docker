@@ -3,11 +3,11 @@
 <!-- TOC -->
 
 - [🐳 Sonar OpenCPU Dockerfile](#🐳-sonar-opencpu-dockerfile)
-	- [Credit](#credit)
-	- [TODO](#todo)
-	- [Build Container and Push to DockerHub](#build-container-and-push-to-dockerhub)
-	- [Run Container](#run-container)
-	- [Run Container Dev Mode](#run-container-dev-mode)
+  - [Credit](#credit)
+  - [TODO](#todo)
+  - [Build Container and Push to DockerHub](#build-container-and-push-to-dockerhub)
+  - [Run Container](#run-container)
+  - [Run Container Dev Mode](#run-container-dev-mode)
 
 <!-- /TOC -->
 
@@ -83,6 +83,7 @@ docker run -t -d -p 80:80 \
 *Aligner Paths:*
 
 ```bash
+docker pull paulklemm/snr
 docker run -t -d -p 80:80 \
     -p 8004:8004 \
     -v /opt/sonar/data:/home/opencpu/sonar/data \
