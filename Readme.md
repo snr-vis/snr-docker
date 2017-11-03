@@ -8,6 +8,7 @@
   - [Build Container and Push to DockerHub](#build-container-and-push-to-dockerhub)
   - [Run Container](#run-container)
   - [Run Container Dev Mode](#run-container-dev-mode)
+  - [Links](#links)
 
 <!-- /TOC -->
 
@@ -96,3 +97,7 @@ Edit the package using RStudio:
 
 - [`localhost:8004/rstudio`](localhost:8004/rstudio)
 - User/PW: `opencpu`/`opencpu`
+
+## Links
+
+- [How to include and preload data in OpenCPU packages](https://www.opencpu.org/posts/scoring-engine/) ([.onLoad call](https://github.com/rwebapps/tvscore/blob/master/R/onLoad.R))
