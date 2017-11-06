@@ -77,7 +77,7 @@ RUN sed -i '/"timelimit.post": 90/c\    "timelimit.post": 1000,' /etc/opencpu/se
   sed -i '/"preload": \["lattice"\]/c\    "preload": \["lattice", "ggplot2", "sonaR", "sonaRGO", "dplyr", "readr", "jsonlite", "devtools", "biomaRt"\]' /etc/opencpu/server.conf
 
 # HACK: Download the Ensembl Metadata
-RUN Rscript -e "library(sonaRGO); get_go_summary()"
+RUN Rscript -e "library(sonaRGO); summary <- get_go_summary()"
 
 # Add the CRON-Job to purge session files older than one hour
 # From https://github.com/opencpu/opencpu-server/blob/master/opencpu-server/cron.d/opencpu
