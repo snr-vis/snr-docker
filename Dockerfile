@@ -69,6 +69,10 @@ RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.d
 RUN Rscript -e "source('https://bioconductor.org/biocLite.R'); biocLite('BiocInstaller')"
 # Set repos to CRAN and Bioconductor and then install `snrgo` and it's dependencies
 RUN Rscript -e "setRepositories(ind=c(1,2)); devtools::install_github('paulklemm/snrgo')"
+
+# HACK: Download the Ensembl Metadata
+RUN Rscript -e "library(sonaRGO); summary <- get_go_summary()"
+
 # Install Sonar package
 # Clone the SNR package and install from folder because `install_github` has problems with LFS
 RUN cd ~/ && \
@@ -85,9 +89,6 @@ RUN Rscript -e "remove.packages(installed.packages()[duplicated(rownames(install
 # Change the OpenCPU config settings
 RUN sed -i '/"timelimit.post": 90/c\    "timelimit.post": 1000,' /etc/opencpu/server.conf && \
   sed -i '/"preload": \["lattice"\]/c\    "preload": \["lattice", "ggplot2", "sonaR", "sonaRGO", "dplyr", "readr", "jsonlite", "devtools", "biomaRt"\]' /etc/opencpu/server.conf
-
-# HACK: Download the Ensembl Metadata
-RUN Rscript -e "library(sonaRGO); summary <- get_go_summary()"
 
 # Add the CRON-Job to purge session files older than one hour
 # From https://github.com/opencpu/opencpu-server/blob/master/opencpu-server/cron.d/opencpu
