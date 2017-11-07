@@ -59,13 +59,23 @@ RUN mkdir -p /usr/local/var/ensembl && \
   chgrp -R www-data /usr/local/var/ensembl && \
   chmod -R 777 /usr/local/var/ensembl
 
+# Install GIT LFS support to fetch the git repo of snr
+# See https://github.com/git-lfs/git-lfs/blob/master/INSTALLING.md
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash && \
+  sudo apt-get install git-lfs
+
 # Install SonarGO package
 # Installing BiocInstaller - https://stackoverflow.com/questions/34617306/r-package-with-cran-and-bioconductor-dependencies
 RUN Rscript -e "source('https://bioconductor.org/biocLite.R'); biocLite('BiocInstaller')"
 # Set repos to CRAN and Bioconductor and then install `snrgo` and it's dependencies
 RUN Rscript -e "setRepositories(ind=c(1,2)); devtools::install_github('paulklemm/snrgo')"
 # Install Sonar package
-RUN Rscript -e "devtools::install_github('paulklemm/snr')"
+# Clone the SNR package and install from folder because `install_github` has problems with LFS
+RUN cd ~/ && \
+  git clone https://github.com/paulklemm/snr.git && \
+  Rscript -e "devtools::install('~/snr')"
+
+#RUN Rscript -e "devtools::install_github('paulklemm/snr')"
 # HACK: OpenCPU and RStudio already install some packages that are also requirements
 # for the `snr` and `snrgo` package. When `snr` and `snrgo` rely on never versions this
 # causes problems. Therefore we will remove the duplicated packages and only keep the ones 
