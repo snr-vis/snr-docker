@@ -70,7 +70,7 @@ RUN Rscript -e "source('https://bioconductor.org/biocLite.R'); biocLite('BiocIns
 # Set repos to CRAN and Bioconductor and then install `snrgo` and it's dependencies
 RUN Rscript -e "setRepositories(ind=c(1,2)); devtools::install_github('paulklemm/snrgo')"
 # Install roxygen for debugging purposes
-RUN Rscript -e "install.packages('roxygen2')"
+RUN Rscript -e "install.packages('roxygen2', repos='http://cran.rstudio.com/')"
 
 # HACK: Download the Ensembl Metadata
 RUN Rscript -e "library(sonaRGO); summary <- get_go_summary()"
