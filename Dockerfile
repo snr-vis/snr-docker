@@ -92,6 +92,8 @@ RUN Rscript -e "remove.packages(installed.packages()[duplicated(rownames(install
 RUN sed -i '/"timelimit.post": 90/c\    "timelimit.post": 1000,' /etc/opencpu/server.conf && \
   sed -i '/"preload": \["lattice"\]/c\    "preload": \["lattice", "ggplot2", "sonaR", "sonaRGO", "dplyr", "readr", "jsonlite", "devtools", "biomaRt"\]' /etc/opencpu/server.conf
 
+# Change deletion cycle to two weeks - (60 * 24 * 7 * 2)
+RUN sed -i 's/+60/+20160/g' /usr/lib/opencpu/scripts/cleanocpu.sh && sed -i 's/+1440/+20160/g' /usr/lib/opencpu/scripts/cleanocpu.sh
 # Add the CRON-Job to purge session files older than one hour
 # From https://github.com/opencpu/opencpu-server/blob/master/opencpu-server/cron.d/opencpu
 RUN echo '*/10 * * * * root /usr/lib/opencpu/scripts/cleanocpu.sh' > /etc/cron.d/opencpu
