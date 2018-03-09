@@ -36,7 +36,7 @@ RUN \
   apt-get install -y rstudio-server r-base-dev sudo curl git libcurl4-openssl-dev libssl-dev libxml2-dev libssh2-1-dev
 
 ########################################################
-################ SNR ###################################
+################ SNR-Opencpu ###########################
 ########################################################
 
 # Install additional Ubuntu packages
@@ -109,7 +109,37 @@ RUN echo '*/10 * * * * root /usr/lib/opencpu/scripts/cleanocpu.sh' > /etc/cron.d
 RUN chmod 0644 /etc/cron.d/opencpu
 # RUN crontab /etc/cron.d/opencpu
 
+########################################################
+################ SNR-Node ##############################
+########################################################
+
+# Install node
+#RUN \
+#  apt-get -y update && \
+#  apt-get -y install nodejs && \
+#  apt-get -y install npm && \
+#  # node points to nodejs - https://stackoverflow.com/a/18130296/2274058
+#  update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
+# Install Node (from https://askubuntu.com/a/262663)
+RUN cd /usr/local/src && \
+  curl http://nodejs.org/dist/v9.8.0/node-v9.8.0.tar.gz -o node-v9.8.0.tar.gz && \
+  tar -xvzf node-v9.8.0.tar.gz && \
+  cd node-v9.8.0 && \
+  ./configure && \
+  make && \
+  make install && \
+  npm install -g pm2
+
+RUN echo "Blaaaa"
+# Download node project
+RUN cd /usr/src/ && git clone https://github.com/snr-vis/snr && \
+  cd /usr/src/snr/ && \
+  npm install && \
+  cd /usr/src/snr/client && \
+  npm install && \
+  npm run build
+
 # Start cron, rstudio server and opencpu server.
 # Server is started now because otherwise newly installed package will already be loaded.
 # https://stackoverflow.com/questions/37458287/how-to-run-a-cron-job-inside-a-docker-container
-CMD cron && /usr/lib/rstudio-server/bin/rserver && apachectl -DFOREGROUND
+CMD pm2 serve /usr/src/snr/client/build 3000 && pm2 start /usr/src/snr/server.js && cron && /usr/lib/rstudio-server/bin/rserver && apachectl -DFOREGROUND
