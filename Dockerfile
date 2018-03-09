@@ -130,7 +130,7 @@ RUN cd /usr/local/src && \
   make install && \
   npm install -g pm2
 
-RUN echo "Blaaaa"
+RUN echo "Blaaaaa"
 # Download node project
 RUN cd /usr/src/ && git clone https://github.com/snr-vis/snr && \
   cd /usr/src/snr/ && \
@@ -139,7 +139,36 @@ RUN cd /usr/src/ && git clone https://github.com/snr-vis/snr && \
   npm install && \
   npm run build
 
+# Install apache that puts of port :85/ on the front end and :85/api on the node server
+# Apache file:
+# 
+# server {
+#   listen 85;
+# 
+#   location / {
+#     proxy_set_header X-Real-IP $remote_addr;
+#     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#     proxy_set_header Host $http_host;
+#     proxy_set_header X-NginX-Proxy true;
+#     proxy_pass http://127.0.0.1:3000;
+#     proxy_redirect off;
+#   }
+#   location /api {
+#     proxy_pass http://127.0.0.1:3099;
+#     proxy_http_version 1.1;
+#     proxy_set_header Upgrade $http_upgrade;
+#     proxy_set_header Connection 'upgrade';
+#     proxy_set_header Host $host;
+#     proxy_cache_bypass $http_upgrade;
+#   }
+# }
+# https://paste.ngx.cc/b8dae11690610e98
+# https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-14-04#set-up-reverse-proxy-server
+RUN apt-get install -y nginx && \
+  echo "server { \n  listen 85; \n  location / { \n  proxy_set_header X-Real-IP \$remote_addr; \n  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for; \n  proxy_set_header Host \$http_host; \n  proxy_set_header X-NginX-Proxy true; \n  proxy_pass http://127.0.0.1:3000; \n  proxy_redirect off; \n  } \n  location /api { \n  proxy_pass http://127.0.0.1:3099; \n  proxy_http_version 1.1; \n  proxy_set_header Upgrade \$http_upgrade; \n  proxy_set_header Connection 'upgrade'; \n  proxy_set_header Host \$host; \n  proxy_cache_bypass \$http_upgrade; \n  } \n}" >> /etc/nginx/sites-enabled/snr && \
+  rm /etc/nginx/sites-enabled/default
+
 # Start cron, rstudio server and opencpu server.
 # Server is started now because otherwise newly installed package will already be loaded.
 # https://stackoverflow.com/questions/37458287/how-to-run-a-cron-job-inside-a-docker-container
-CMD pm2 serve /usr/src/snr/client/build 3000 && pm2 start /usr/src/snr/server.js && cron && /usr/lib/rstudio-server/bin/rserver && apachectl -DFOREGROUND
+CMD service nginx start && pm2 serve /usr/src/snr/client/build 3000 && pm2 start /usr/src/snr/server.js && cron && /usr/lib/rstudio-server/bin/rserver && apachectl -DFOREGROUND
