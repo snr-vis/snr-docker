@@ -130,7 +130,7 @@ RUN cd /usr/local/src && \
   make install && \
   npm install -g pm2
 
-RUN echo "Blaaaaa"
+RUN echo "Blaaaaabi"
 # Download node project
 RUN cd /usr/src/ && git clone https://github.com/snr-vis/snr && \
   cd /usr/src/snr/ && \
@@ -152,6 +152,10 @@ RUN cd /usr/src/ && git clone https://github.com/snr-vis/snr && \
 #     proxy_set_header X-NginX-Proxy true;
 #     proxy_pass http://127.0.0.1:3000;
 #     proxy_redirect off;
+#     proxy_connect_timeout 36000s;
+#     proxy_read_timeout 36000s;
+#     proxy_send_timeout 36000s;
+#     send_timeout 36000s;
 #   }
 #   location /api {
 #     proxy_pass http://127.0.0.1:3099;
@@ -160,12 +164,16 @@ RUN cd /usr/src/ && git clone https://github.com/snr-vis/snr && \
 #     proxy_set_header Connection 'upgrade';
 #     proxy_set_header Host $host;
 #     proxy_cache_bypass $http_upgrade;
+#     proxy_connect_timeout 36000s;
+#     proxy_read_timeout 36000s;
+#     proxy_send_timeout 36000s;
+#     send_timeout 36000s;
 #   }
 # }
 # https://paste.ngx.cc/b8dae11690610e98
 # https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-14-04#set-up-reverse-proxy-server
 RUN apt-get install -y nginx && \
-  echo "server { \n  listen 85; \n  location / { \n  proxy_set_header X-Real-IP \$remote_addr; \n  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for; \n  proxy_set_header Host \$http_host; \n  proxy_set_header X-NginX-Proxy true; \n  proxy_pass http://127.0.0.1:3000; \n  proxy_redirect off; \n  } \n  location /api { \n  proxy_pass http://127.0.0.1:3099; \n  proxy_http_version 1.1; \n  proxy_set_header Upgrade \$http_upgrade; \n  proxy_set_header Connection 'upgrade'; \n  proxy_set_header Host \$host; \n  proxy_cache_bypass \$http_upgrade; \n  } \n}" >> /etc/nginx/sites-enabled/snr && \
+  echo "server {\n  listen 85;\n\n  location / {\n    proxy_set_header X-Real-IP \$remote_addr;\n    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;\n    proxy_set_header Host \$http_host;\n    proxy_set_header X-NginX-Proxy true;\n    proxy_pass http://127.0.0.1:3000;\n    proxy_redirect off;\n    proxy_connect_timeout 36000s;\n    proxy_read_timeout 36000s;\n    proxy_send_timeout 36000s;\n    send_timeout 36000s;\n  }\n  location /api {\n    proxy_pass http://127.0.0.1:3099;\n    proxy_http_version 1.1;\n    proxy_set_header Upgrade \$http_upgrade;\n    proxy_set_header Connection 'upgrade';\n    proxy_set_header Host \$host;\n    proxy_cache_bypass \$http_upgrade;\n    proxy_connect_timeout 36000s;\n    proxy_read_timeout 36000s;\n    proxy_send_timeout 36000s;\n    send_timeout 36000s;\n  }\n}" >> /etc/nginx/sites-enabled/snr && \
   rm /etc/nginx/sites-enabled/default
 
 # Start cron, rstudio server and opencpu server.
