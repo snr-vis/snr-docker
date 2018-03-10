@@ -78,8 +78,8 @@ RUN Rscript -e "library(sonaRGO); summary <- get_go_summary()"
 # Install Sonar package
 # Clone the SNR package and install from folder because `install_github` has problems with LFS
 RUN cd ~/ && \
-  git clone https://github.molgen.mpg.de/paulklemm/snr.git && \
-  Rscript -e "devtools::install('~/snr')"
+  git clone https://github.molgen.mpg.de/paulklemm/snR.git && \
+  Rscript -e "devtools::install('~/snR')"
 
 #RUN Rscript -e "devtools::install_github('paulklemm/snr')"
 # HACK: OpenCPU and RStudio already install some packages that are also requirements
