@@ -2,13 +2,14 @@
 
 <!-- TOC -->
 
-* [🐳 Sonar OpenCPU Dockerfile](#🐳-sonar-opencpu-dockerfile)
-  * [Credit](#credit)
-  * [TODO](#todo)
-  * [Build Container and Push to DockerHub](#build-container-and-push-to-dockerhub)
-  * [Run Container](#run-container)
-  * [Run Container Dev Mode](#run-container-dev-mode)
-  * [Links](#links)
+- [🐳 Sonar OpenCPU Dockerfile](#🐳-sonar-opencpu-dockerfile)
+  - [Credit](#credit)
+  - [TODO](#todo)
+  - [Build Container and Push to DockerHub](#build-container-and-push-to-dockerhub)
+  - [Run Container](#run-container)
+  - [Run Container Dev Mode](#run-container-dev-mode)
+  - [Links](#links)
+  - [Git Setup](#git-setup)
 
 <!-- /TOC -->
 
@@ -113,3 +114,14 @@ Edit the package using RStudio:
 ## Links
 
 * [How to include and preload data in OpenCPU packages](https://www.opencpu.org/posts/scoring-engine/) ([.onLoad call](https://github.com/rwebapps/tvscore/blob/master/R/onLoad.R))
+
+## Git Setup
+
+Dev comment: this repo knows two origins:
+
+```bash
+# From https://stackoverflow.com/questions/14290113/git-pushing-code-to-two-remotes
+git remote set-url --add --push origin git@github.com:snr-vis/snr-docker.git
+git remote set-url --add --push origin git@github.sf.mpg.de:pklemm/snr-docker.git
+# Check with `git remote show origin`
+```
