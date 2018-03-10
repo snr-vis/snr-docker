@@ -2,14 +2,13 @@
 
 <!-- TOC -->
 
-- [🐳 Sonar OpenCPU Dockerfile](#🐳-sonar-opencpu-dockerfile)
-  - [Credit](#credit)
-  - [TODO](#todo)
-  - [Build Container and Push to DockerHub](#build-container-and-push-to-dockerhub)
-  - [Run Container](#run-container)
-  - [Run Container Dev Mode](#run-container-dev-mode)
-  - [Links](#links)
-  - [Git Setup](#git-setup)
+* [🐳 Sonar OpenCPU Dockerfile](#🐳-sonar-opencpu-dockerfile)
+  * [Credit](#credit)
+  * [TODO](#todo)
+  * [Build Container and Push to DockerHub](#build-container-and-push-to-dockerhub)
+  * [Run Container](#run-container)
+  * [Links](#links)
+  * [Git Setup](#git-setup)
 
 <!-- /TOC -->
 
@@ -57,59 +56,7 @@ OpenCPU is run as Docker container. In order to provide it with the required dat
 
 Inside the `OpenCPU` docker image, a user called opencpu requires read and write access to the folders listed above. The opencpu user in docker image is user group `www-data`, therefore files mounted via `-v` have to be part of `www-data` group and should be group-writeable (e.g. 755).
 
-Example call:
-
-```bash
-docker run -t -d -p 80:80 \
-    -p 8004:8004 \
-    -v /Users/paul/Workshop/MPI/MPI-MR-Projects/SONAR/app/data:/home/opencpu/sonar/data \
-    --name opencpu_rstudio \
-    paulklemm/snr
-```
-
-## Run Container Dev Mode
-
-To allow easy changes of the `R` packages they can also be mounted as external volumes:
-
-_Release Paths:_
-
-```bash
-docker pull paulklemm/snr
-docker run -t -d \
-    #-p 8004:8004 \
-    -p 8080:8080 \
-    -v sonar:/home/opencpu/sonar \
-    --name opencpu_rstudio_test \
-    paulklemm/snr
-```
-
-_Macbook Paths:_
-
-```bash
-docker run -t -d -p 80:80 \
-    -p 8004:8004 \
-    -v /Users/paul/Workshop/MPI/MPI-MR-Projects/SONAR/app/data:/home/opencpu/sonar/data \
-    -v /Users/paul/Workshop/MPI/MPI-MR-Projects/SONAR/app/sona-R:/home/opencpu/sonar/sonaR \
-    --name opencpu_rstudio \
-    paulklemm/snr
-```
-
-_Aligner Paths:_
-
-```bash
-docker pull paulklemm/snr
-docker run -t -d -p 80:80 \
-    -p 8004:8004 \
-    -v /opt/sonar/data:/home/opencpu/sonar/data \
-    -v /opt/sonar/sona-R:/home/opencpu/sonar/sonaR \
-    --name opencpu_rstudio \
-    paulklemm/snr
-```
-
-Edit the package using RStudio:
-
-* [`localhost:8004/rstudio`](localhost:8004/rstudio)
-* User/PW: `opencpu`/`opencpu`
+**For instructions how to run the container, refer to [https://github.com/snr-vis/setup-snr](https://github.com/snr-vis/setup-snr).**
 
 ## Links
 
