@@ -68,7 +68,7 @@ RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.d
 # Installing BiocInstaller - https://stackoverflow.com/questions/34617306/r-package-with-cran-and-bioconductor-dependencies
 RUN Rscript -e "source('https://bioconductor.org/biocLite.R'); biocLite('BiocInstaller')"
 # Set repos to CRAN and Bioconductor and then install `snrgo` and it's dependencies
-RUN Rscript -e "setRepositories(ind=c(1,2)); devtools::install_github('paulklemm/snrgo')"
+RUN Rscript -e "setRepositories(ind=c(1,2)); devtools::install_github('snr-vis/snrgo')"
 # Install roxygen for debugging purposes
 RUN Rscript -e "install.packages('roxygen2', repos='http://cran.rstudio.com/')"
 
@@ -130,7 +130,6 @@ RUN cd /usr/local/src && \
   make install && \
   npm install -g pm2
 
-RUN echo "Blaaaaabi"
 # Download node project
 RUN cd /usr/src/ && git clone https://github.com/snr-vis/snr && \
   cd /usr/src/snr/ && \
