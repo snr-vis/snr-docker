@@ -130,6 +130,7 @@ RUN cd /usr/local/src && \
   make install && \
   npm install -g pm2
 
+RUN echo "Redownload this"
 # Download node project
 RUN cd /usr/src/ && git clone https://github.com/snr-vis/snr && \
   cd /usr/src/snr/ && \
@@ -178,4 +179,4 @@ RUN apt-get install -y nginx && \
 # Start cron, rstudio server and opencpu server.
 # Server is started now because otherwise newly installed package will already be loaded.
 # https://stackoverflow.com/questions/37458287/how-to-run-a-cron-job-inside-a-docker-container
-CMD service nginx start && pm2 serve /usr/src/snr/client/build 3000 && pm2 start /usr/src/snr/server.js && cron && /usr/lib/rstudio-server/bin/rserver && apachectl -DFOREGROUND
+CMD service nginx start && pm2 serve /usr/src/snr/client/build 3000 && pm2 start /usr/src/snr/snr-node-server.json && cron && /usr/lib/rstudio-server/bin/rserver && apachectl -DFOREGROUND
