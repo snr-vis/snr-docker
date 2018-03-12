@@ -130,7 +130,6 @@ RUN cd /usr/local/src && \
   make install && \
   npm install -g pm2
 
-RUN echo "Redownload this"
 # Download node project
 RUN cd /usr/src/ && git clone https://github.com/snr-vis/snr && \
   cd /usr/src/snr/ && \
