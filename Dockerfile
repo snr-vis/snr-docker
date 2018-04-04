@@ -127,8 +127,10 @@ RUN cd /usr/local/src && \
   cd node-v9.8.0 && \
   ./configure && \
   make && \
-  make install && \
-  npm install -g pm2
+  make install
+
+# Install pm2 package manager
+RUN npm install -g pm2
 
 # Download node project
 RUN cd /usr/src/ && git clone https://github.com/snr-vis/snr && \
